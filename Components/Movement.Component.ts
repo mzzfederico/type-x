@@ -1,41 +1,46 @@
-import Component from ".";
-import { roundFloat } from "../Utils/rounding";
+import Component from '.';
+import { roundFloat } from '../Utils/rounding';
 
 export default class Movement extends Component {
-    x: number;
-    y: number;
-    onStart: Function;
-    onStop: Function;
+  x: number;
 
-    constructor({ x, y, onStart = () => { }, onStop = () => { } }) {
-        super();
-        this.x = x;
-        this.y = y;
-        this.onStart = onStart;
-        this.onStop = onStop;
-    }
+  y: number;
 
-    addSpeed(x, y) {
-        this.x = roundFloat(this.x + x, 100_000);
-        this.y = roundFloat(this.y + y, 100_000);
-    }
+  onStart: Function;
 
-    setSpeed(x, y) {
-        this.x = x;
-        this.y = y;
-    }
+  onStop: Function;
 
-    multiplySpeed(x, y) {
-        this.x = roundFloat(this.x * x, 100_000);
-        this.y = roundFloat(this.y * y, 100_000);
-    }
+  constructor({
+    x, y, onStart = () => { }, onStop = () => { },
+  }) {
+    super();
+    this.x = x;
+    this.y = y;
+    this.onStart = onStart;
+    this.onStop = onStop;
+  }
 
-    clearSpeed() {
-        this.x = 0;
-        this.y = 0;
-    }
+  addSpeed(x, y) {
+    this.x = roundFloat(this.x + x, 100_000);
+    this.y = roundFloat(this.y + y, 100_000);
+  }
 
-    isMoving() {
-        return this.x === 0 && this.y === 0;
-    }
+  setSpeed(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  multiplySpeed(x, y) {
+    this.x = roundFloat(this.x * x, 100_000);
+    this.y = roundFloat(this.y * y, 100_000);
+  }
+
+  clearSpeed() {
+    this.x = 0;
+    this.y = 0;
+  }
+
+  isMoving() {
+    return this.x === 0 && this.y === 0;
+  }
 }

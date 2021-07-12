@@ -1,47 +1,49 @@
-import System from ".";
-import { ZOOM } from "../../constants";
-import Position from "../Components/Position.Component";
-import Tilemap from "../Components/Tilemap.Component";
+import System from '.';
+import { ZOOM } from '../../constants';
+import Position from '../Components/Position.Component';
+import Tilemap from '../Components/Tilemap.Component';
 
-import { drawTileMap } from "../Utils/canvasRendering";
+import { drawTileMap } from '../Utils/canvasRendering';
 
 export default class CanvasRenderer extends System {
-    height: number = 300;
-    width: number = 150;
-    ctx: CanvasRenderingContext2D;
+  height: number = 300;
 
-    constructor(width, height) {
-        super();
-        this.height = height;
-        this.width = width;
-    }
+  width: number = 150;
 
-    drawTilemapsFromEntities(entities) {
-        entities
-            .filter(entity => !!entity.getComponent(Tilemap) && !!entity.getComponent(Position))
-            .forEach(
-                (entity) => {
-                    const tilemap = entity.getComponent(Tilemap) as Tilemap;
-                    const position = entity.getComponent(Position) as Position;
-                    drawTileMap(this.ctx, tilemap.map, tilemap.set, position);
-                }
-            );
-    }
+  ctx: CanvasRenderingContext2D;
 
-    start(entities): void {
-        const canvas = document.createElement("canvas");
-        canvas.setAttribute("id", "CanvasRenderer");
-        this.ctx = canvas.getContext("2d");
+  constructor(width, height) {
+    super();
+    this.height = height;
+    this.width = width;
+  }
 
-        canvas.setAttribute('width', `${this.width * ZOOM}`);
-        canvas.setAttribute('height', `${this.height * ZOOM}`);
+  drawTilemapsFromEntities(entities) {
+    entities
+      .filter((entity) => !!entity.getComponent(Tilemap) && !!entity.getComponent(Position))
+      .forEach(
+        (entity) => {
+          const tilemap = entity.getComponent(Tilemap) as Tilemap;
+          const position = entity.getComponent(Position) as Position;
+          drawTileMap(this.ctx, tilemap.map, tilemap.set, position);
+        },
+      );
+  }
 
-        this.drawTilemapsFromEntities(entities);
+  start(entities): void {
+    const canvas = document.createElement('canvas');
+    canvas.setAttribute('id', 'CanvasRenderer');
+    this.ctx = canvas.getContext('2d');
 
-        document.getElementById("root").append(canvas);
-    }
+    canvas.setAttribute('width', `${this.width * ZOOM}`);
+    canvas.setAttribute('height', `${this.height * ZOOM}`);
 
-    end() {
-        document.getElementById("CanvasRenderer").remove();
-    }
+    this.drawTilemapsFromEntities(entities);
+
+    document.getElementById('root').append(canvas);
+  }
+
+  end() {
+    document.getElementById('CanvasRenderer').remove();
+  }
 }

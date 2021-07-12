@@ -1,19 +1,21 @@
-import Component from ".";
+import Component from '.';
 
 export default class Sprite extends Component {
-    src: string;
-    width: number;
-    height: number;
+  src: string;
 
-    constructor({ src, width = 1, height = 1 }) {
-        super();
+  width: number;
 
-        this.src = src;
-        this.width = width;
-        this.height = height;
-    }
+  height: number;
 
-    replaceSource(src: string): void {
-        if (src) this.src = src;
-    }
+  constructor({ src, width = 1, height = 1 }) {
+    super();
+
+    this.src = src;
+    this.width = width;
+    this.height = height;
+  }
+
+  replaceSource(src: string): void {
+    if (src) this.src = src;
+  }
 }

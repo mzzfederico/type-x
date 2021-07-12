@@ -1,11 +1,11 @@
-import Component from ".";
+import Component from '.';
 
 export default class Input extends Component {
-    config: Object = {};
+  config: Object = {};
 
-    constructor({ config }) {
-        super();
+  constructor({ config }) {
+    super();
 
-        this.config = config;
-    }
+    this.config = config;
+  }
 }

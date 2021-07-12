@@ -1,47 +1,52 @@
-import Component from "../Components";
-import Position from "../Components/Position.Component";
 import { v4 as uuidv4 } from 'uuid';
+import Component from '../Components';
+import Position from '../Components/Position.Component';
 
 export default class Entity {
-    id: string;
-    tag: string;
-    components: Object;
-    isDisabled: boolean;
+  id: string;
 
-    constructor({ id = uuidv4(), x = 0, y = 0, tag = "", components = {}, isDisabled = false }: IEntityProps) {
-        this.id = id;
-        this.tag = tag;
-        this.components = { ...components };
-        this.isDisabled = isDisabled;
-        /* Default components */
-        this.addComponent(new Position({ x, y }));
-    }
+  tag: string;
 
-    getComponent(componentClass): unknown {
-        return this.components[componentClass.name];
-    }
+  components: Object;
 
-    addComponent(component: Component): Entity {
-        this.components[component.constructor.name] = component;
-        component.registerEntityId(this.id);
-        return this;
-    }
+  isDisabled: boolean;
 
-    removeComponent(component: Component): Entity {
-        delete this.components[component.name];
-        return this;
-    }
+  constructor({
+    id = uuidv4(), x = 0, y = 0, tag = '', components = {}, isDisabled = false,
+  }: IEntityProps) {
+    this.id = id;
+    this.tag = tag;
+    this.components = { ...components };
+    this.isDisabled = isDisabled;
+    /* Default components */
+    this.addComponent(new Position({ x, y }));
+  }
 
-    setDisabled(newState: boolean): void {
-        this.isDisabled = newState;
-    }
+  getComponent(componentClass): unknown {
+    return this.components[componentClass.name];
+  }
+
+  addComponent(component: Component): Entity {
+    this.components[component.constructor.name] = component;
+    component.registerEntityId(this.id);
+    return this;
+  }
+
+  removeComponent(component: Component): Entity {
+    delete this.components[component.name];
+    return this;
+  }
+
+  setDisabled(newState: boolean): void {
+    this.isDisabled = newState;
+  }
 }
 
 interface IEntityProps {
-    id?: string;
-    tag?: string;
-    x?: number;
-    y?: number;
-    components?: Object;
-    isDisabled?: boolean;
+  id?: string;
+  tag?: string;
+  x?: number;
+  y?: number;
+  components?: Object;
+  isDisabled?: boolean;
 }

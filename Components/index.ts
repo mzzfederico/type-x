@@ -1,8 +1,9 @@
 export default class Component {
-    name: string;
-    entityId: string;
+  name: string;
 
-    registerEntityId(id: string): void {
-        this.entityId = id;
-    }
+  entityId: string;
+
+  registerEntityId(id: string): void {
+    this.entityId = id;
+  }
 }
