@@ -1,5 +1,6 @@
 import Component from '../Component';
-import Entity from '../Entities';
+import Entity from '../Entity';
+import { Coordinate2d } from '../Types/Coordinate2d';
 
 export default class Collider extends Component {
   width: number;
@@ -12,7 +13,7 @@ export default class Collider extends Component {
 
   onCollision: Function;
 
-  safePosition: Object;
+  safePosition: Coordinate2d;
 
   parentEntity: Entity;
 
@@ -32,7 +33,7 @@ export default class Collider extends Component {
     this.safePosition = { x, y };
   }
 
-  getSafePosition(): Object {
+  getSafePosition(): Coordinate2d {
     return this.safePosition;
   }
 }

@@ -6,6 +6,12 @@ module.exports = {
     tsconfig: path.resolve(__dirname, "tsconfig.json"),
     sourcemap: true,
     bundle: true,
+    define: {
+        'process.env.ZOOM': 2,
+        'process.env.TILE_SIZE': 16,
+        'process.env.ROOM_WIDTH': 20,
+        'process.env.ROOM_HEIGHT': 12,
+    },
     loader: {
         ".png": "dataurl"
     }

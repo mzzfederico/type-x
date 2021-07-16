@@ -2,7 +2,7 @@ import System from '../System';
 import Collider from '../Components/Collider.Component';
 import Movement from '../Components/Movement.Component';
 import Position from '../Components/Position.Component';
-import Entity from '../Entities';
+import Entity from '../Entity';
 
 export default class MovementSystem extends System {
   update(timeframe: number = 0, entities: Entity[]): void {
@@ -19,17 +19,17 @@ export default class MovementSystem extends System {
 
         const { x, y } = movement;
 
-        /* Hacky way to notify each component that it is being moved around or not */
-        if (movement.isMoving()) {
-          movement.onStart({ x, y });
-        } else {
-          movement.onStop();
-        }
-
         const { x: currentX, y: currentY } = position;
         collider.saveSafePosition(currentX, currentY);
         position.transformation(x * timeframe, y * timeframe);
         movement.multiplySpeed(0.25, 0.25);
+
+        /* Hacky way to notify each component that it is being moved around or not */
+        if (movement.x + movement.y !== 0) {
+          movement.onStart({ x, y });
+        } else {
+          movement.onStop();
+        }
       });
   }
 }

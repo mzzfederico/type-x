@@ -1,6 +1,6 @@
 import System from '../System';
 import Input from '../Components/Input.Component';
-import Entity from '../Entities';
+import Entity from '../Entity';
 
 export default class InputManager extends System {
   inputs: Object = {};

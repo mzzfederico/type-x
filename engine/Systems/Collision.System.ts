@@ -1,7 +1,7 @@
 import System from '../System';
 import Collider from '../Components/Collider.Component';
 import Position from '../Components/Position.Component';
-import Entity from '../Entities';
+import Entity from '../Entity';
 
 export default class Collision extends System {
   update(time: number, entities: Entity[]): void {
@@ -18,12 +18,19 @@ export default class Collision extends System {
         .filter((target) => target.id !== source.id)
         .forEach((target) => {
           const collisionOccurred = this.checkCollision(
-            { collider: source.getComponent(Collider) as Collider, position: source.getComponent(Position) as Position },
-            { collider: target.getComponent(Collider) as Collider, position: target.getComponent(Position) as Position },
+            {
+              collider: source.getComponent(Collider) as Collider,
+              position: source.getComponent(Position) as Position
+            },
+            {
+              collider: target.getComponent(Collider) as Collider,
+              position: target.getComponent(Position) as Position
+            },
           );
 
           if (collisionOccurred) {
-            (source.getComponent(Collider) as Collider).onCollision(target, this.$scene);
+            (source.getComponent(Collider) as Collider)
+              .onCollision(target, this.$scene);
           }
         }),
     );

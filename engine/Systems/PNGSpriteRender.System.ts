@@ -7,7 +7,7 @@ const ZOOM: number = parseInt(process.env.ZOOM) || 2;
 const TILE_SIZE: number = parseInt(process.env.TILE_SIZE) || 16;
 
 export default class SpriteRenderer extends System {
-  update(time: number, entities: Entity[]): void {
+  draw(time: number, entities: Entity[]): void {
     /* Runs the system on each frame */
     entities
       .filter((entity: Entity) => entity.getComponent(Sprite))

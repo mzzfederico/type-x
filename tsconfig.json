@@ -30,6 +30,10 @@
             "__Utils/*": [
                 "./engine/Utils/*",
                 "./client/src/Utils/*"
+            ],
+            "__Types/*": [
+                "./engine/Types/*",
+                "./client/src/Types/*"
             ]
         }
     },

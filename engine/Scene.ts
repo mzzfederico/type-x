@@ -1,5 +1,5 @@
-import Entity from './Entities';
-import System from './System';
+import Entity from '__Core/Entity';
+import System from '__Core/System';
 
 export default class Scene {
   target: HTMLElement;

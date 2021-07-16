@@ -1,10 +1,10 @@
 import System from '../System';
 import Sprite from '../Components/Sprite.Component';
 import SpriteAnimation, { SpriteAnimationState } from '../Components/SpriteAnimation.Component';
-import Entity from '../Entities';
+import Entity from '../Entity';
 
 export default class AnimationSystem extends System {
-  update(time, entities) {
+  draw(time, entities) {
     entities
       .filter((entity) => !!entity.getComponent(SpriteAnimation))
       .forEach(
