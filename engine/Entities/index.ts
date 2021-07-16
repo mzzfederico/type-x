@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import Component from '../Components';
+import Component from '../Component';
 import Position from '../Components/Position.Component';
 
 export default class Entity {

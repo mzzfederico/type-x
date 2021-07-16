@@ -1,6 +1,6 @@
-import { TILE_SIZE, ZOOM } from '../../constants';
-
-const realTileSize = TILE_SIZE * ZOOM;
+const ZOOM: number = parseInt(process.env.ZOOM) || 2;
+const TILE_SIZE: number = parseInt(process.env.TILE_SIZE) || 16;
+const realTileSize: number = TILE_SIZE * ZOOM;
 
 export function drawTileMap(ctx, map, tileset, offset) {
   const image = new Image();

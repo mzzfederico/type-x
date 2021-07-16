@@ -1,9 +1,8 @@
-import Component from '.';
-import BricksTileset from '../../Tilesets/bricks';
+import Component from '../Component';
 import Tileset from '../Assets/Tileset';
 
 export default class Tilemap extends Component {
-  set: Tileset = BricksTileset;
+  set: Tileset = null;
 
   map: Array<any> = [[]]; /* TODO: type for tilemap array of tiles values */
 

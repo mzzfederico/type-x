@@ -1,10 +1,14 @@
-import Scene from '../Scene';
+import Scene from './Scene';
 
 export default class System {
   $scene: Scene;
 
   registerScene(parentScene: Scene) {
     this.$scene = parentScene;
+  }
+
+  draw(time, entities): void {
+    /* Runs after updating the state */
   }
 
   update(time, entities): void {

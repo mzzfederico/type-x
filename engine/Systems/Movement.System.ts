@@ -1,4 +1,4 @@
-import System from '.';
+import System from '../System';
 import Collider from '../Components/Collider.Component';
 import Movement from '../Components/Movement.Component';
 import Position from '../Components/Position.Component';

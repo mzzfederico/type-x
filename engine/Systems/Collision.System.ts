@@ -1,4 +1,4 @@
-import System from '.';
+import System from '../System';
 import Collider from '../Components/Collider.Component';
 import Position from '../Components/Position.Component';
 import Entity from '../Entities';

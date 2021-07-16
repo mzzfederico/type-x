@@ -1,0 +1,40 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2020",
+        "jsx": "preserve",
+        "strictFunctionTypes": true,
+        "sourceMap": true,
+        "sourceRoot": "./",
+        "paths": {
+            "__Core/*": [
+                "./engine/*",
+                "./client/src/*"
+            ],
+            "__Assets/*": [
+                "./engine/Assets/*",
+                "./client/src/Assets/*"
+            ],
+            "__Components/*": [
+                "./engine/Components/*",
+                "./client/src/Components/*"
+            ],
+            "__Entities/*": [
+                "./engine/Entities/*",
+                "./client/src/Entities/*"
+            ],
+            "__Systems/*": [
+                "./engine/Systems/*",
+                "./client/src/Systems/*"
+            ],
+            "__Utils/*": [
+                "./engine/Utils/*",
+                "./client/src/Utils/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}

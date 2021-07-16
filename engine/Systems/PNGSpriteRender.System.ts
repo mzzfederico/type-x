@@ -1,8 +1,10 @@
-import System from '.';
-import { TILE_SIZE, ZOOM } from '../../constants';
-import Position from '../Components/Position.Component';
-import Sprite from '../Components/Sprite.Component';
-import Entity from '../Entities';
+import System from '../System';
+import Position from '__Components/Position.Component';
+import Sprite from '__Components/Sprite.Component';
+import Entity from '__Core/Entity';
+
+const ZOOM: number = parseInt(process.env.ZOOM) || 2;
+const TILE_SIZE: number = parseInt(process.env.TILE_SIZE) || 16;
 
 export default class SpriteRenderer extends System {
   update(time: number, entities: Entity[]): void {

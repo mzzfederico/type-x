@@ -1,4 +1,4 @@
-import Component from '.';
+import Component from '../Component';
 
 export default class Sprite extends Component {
   src: string;

@@ -1,4 +1,4 @@
-import Component from '.';
+import Component from '../Component';
 
 export default class Input extends Component {
   config: Object = {};

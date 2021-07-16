@@ -1,4 +1,4 @@
-import Component from '.';
+import Component from '../Component';
 import { roundFloat } from '../Utils/rounding';
 
 export default class Position extends Component {

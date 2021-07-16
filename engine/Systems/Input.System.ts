@@ -1,4 +1,4 @@
-import System from '.';
+import System from '../System';
 import Input from '../Components/Input.Component';
 import Entity from '../Entities';
 

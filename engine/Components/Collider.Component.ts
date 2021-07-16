@@ -1,4 +1,4 @@
-import Component from '.';
+import Component from '../Component';
 import Entity from '../Entities';
 
 export default class Collider extends Component {

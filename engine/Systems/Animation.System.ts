@@ -1,4 +1,4 @@
-import System from '.';
+import System from '../System';
 import Sprite from '../Components/Sprite.Component';
 import SpriteAnimation, { SpriteAnimationState } from '../Components/SpriteAnimation.Component';
 import Entity from '../Entities';

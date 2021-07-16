@@ -1,9 +1,10 @@
-import System from '.';
-import { ZOOM } from '../../constants';
-import Position from '../Components/Position.Component';
-import Tilemap from '../Components/Tilemap.Component';
+import System from '../System';
+import Position from '__Components/Position.Component';
+import Tilemap from '__Components/Tilemap.Component';
 
-import { drawTileMap } from '../Utils/canvasRendering';
+import { drawTileMap } from '__Utils/canvasRendering';
+
+const ZOOM: number = parseInt(process.env.ZOOM) || 2;
 
 export default class CanvasRenderer extends System {
   height: number = 300;
