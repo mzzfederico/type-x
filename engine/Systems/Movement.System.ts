@@ -22,9 +22,11 @@ export default class MovementSystem extends System {
         const { x: currentX, y: currentY } = position;
         collider.saveSafePosition(currentX, currentY);
         position.transformation(x * timeframe, y * timeframe);
+
+        /* Frizione */
         movement.multiplySpeed(0.25, 0.25);
 
-        /* Hacky way to notify each component that it is being moved around or not */
+        /* Hacky way to notify each component sthat it is being moved around or not */
         if (movement.x + movement.y !== 0) {
           movement.onStart({ x, y });
         } else {

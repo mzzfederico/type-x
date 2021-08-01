@@ -120,3 +120,5 @@ dist
 # type-x
 client/**/*
 ./client/**/*
+
+.DS_store

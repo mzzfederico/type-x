@@ -5,6 +5,7 @@ import Input from '__Systems/Input.System';
 import Movement from '__Systems/Movement.System';
 import Animation from '__Systems/Animation.System';
 import Canvas from '__Systems/Canvas.System';
+import PNGSpriteRender from '__Systems/PNGSpriteRender.System';
 
 const ZOOM: number = parseInt(process.env.ZOOM) || 2;
 const TILE_SIZE: number = parseInt(process.env.TILE_SIZE) || 16;
@@ -14,24 +15,29 @@ const ROOM_HEIGHT: number = parseInt(process.env.ROOM_HEIGHT) || 12;
 export default class GameLoop {
   lastRender: number;
 
-  scenes: Scene[];
-
   currentScene: Scene;
 
   coreSystems: System[];
 
-  constructor(scenes: Scene[] = [], initialScene: Scene = scenes[0]) {
+  constructor(initialScene: Scene) {
     this.coreSystems = [
       new Canvas(ROOM_WIDTH * TILE_SIZE, ROOM_HEIGHT * TILE_SIZE),
       new Input(),
       new Movement(),
       new Collision(),
-      new Animation()
+      new Animation(),
+      new PNGSpriteRender(),
     ];
 
     this.lastRender = 0;
-    this.scenes = scenes;
-    this.currentScene = initialScene;
+    this.changeScene(initialScene);
+  }
+
+  changeScene = (newScene): void => {
+    if (this.currentScene) this.end();
+    this.currentScene = newScene;
+    this.currentScene.registerGameLoop(this);
+    this.start();
   }
 
   getSystems = (): System[] => [
@@ -44,8 +50,6 @@ export default class GameLoop {
       system.registerScene(this.currentScene);
       system.start(this.currentScene.entities);
     });
-
-    console.log(this.currentScene);
 
     window.requestAnimationFrame(this.loop);
   }

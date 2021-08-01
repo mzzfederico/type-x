@@ -13,12 +13,14 @@ export default class Collider extends Component {
 
   onCollision: Function;
 
+  hasWeight?: number;
+
   safePosition: Coordinate2d;
 
   parentEntity: Entity;
 
   constructor({
-    width, height, isStatic = false, isRigid = false, onCollision = (target) => { },
+    width, height, isStatic = false, isRigid = false, onCollision = (target) => { }, hasWeight = false
   }) {
     super();
 

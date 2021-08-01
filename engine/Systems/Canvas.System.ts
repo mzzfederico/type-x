@@ -33,17 +33,22 @@ export default class CanvasRenderer extends System {
   }
 
   start(entities): void {
-    const canvas = document.createElement('canvas');
-    canvas.setAttribute('id', 'CanvasRenderer');
-    this.ctx = canvas.getContext('2d');
+    if (!document.getElementById('CanvasRenderer')) {
+      const canvas = document.createElement('canvas');
+      canvas.setAttribute('id', 'CanvasRenderer');
+      this.ctx = canvas.getContext('2d');
 
-    canvas.setAttribute('width', `${this.width * ZOOM}`);
-    canvas.setAttribute('height', `${this.height * ZOOM}`);
+      canvas.setAttribute('width', `${this.width * ZOOM}`);
+      canvas.setAttribute('height', `${this.height * ZOOM}`);
 
-    this.drawTilemapsFromEntities(entities)
+      document.getElementById('root').append(canvas);
+    };
 
-    document.getElementById('root').append(canvas);
+
+    this.drawTilemapsFromEntities(entities);
+
   }
+
   end() {
     document.getElementById('CanvasRenderer').remove();
   }
