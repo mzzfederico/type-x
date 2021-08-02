@@ -43,7 +43,7 @@ export default class GameLoop {
   getSystems = (): System[] => [
     ...this.coreSystems,
     ...this.currentScene.systems
-  ]
+  ];
 
   start = (): void => {
     this.getSystems().forEach((system: System): void => {

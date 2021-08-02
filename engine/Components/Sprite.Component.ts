@@ -2,9 +2,7 @@ import Component from '../Component';
 
 export default class Sprite extends Component {
   src: string;
-
   width: number;
-
   height: number;
 
   constructor({ src, width = 1, height = 1 }) {

@@ -10,6 +10,7 @@ export default class CanvasRenderer extends System {
   height: number = 300;
 
   width: number = 150;
+  canvasElement: HTMLCanvasElement;
 
   ctx: CanvasRenderingContext2D;
 
@@ -32,24 +33,27 @@ export default class CanvasRenderer extends System {
       );
   }
 
+  redrawTilemap() {
+    this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+  }
+
   start(entities): void {
-    if (!document.getElementById('CanvasRenderer')) {
-      const canvas = document.createElement('canvas');
-      canvas.setAttribute('id', 'CanvasRenderer');
-      this.ctx = canvas.getContext('2d');
+    if (!this.canvasElement) {
+      this.canvasElement = document.createElement('canvas');
+      this.canvasElement.setAttribute('id', 'CanvasRenderer');
+      this.ctx = this.canvasElement.getContext('2d');
 
-      canvas.setAttribute('width', `${this.width * ZOOM}`);
-      canvas.setAttribute('height', `${this.height * ZOOM}`);
+      this.canvasElement.setAttribute('width', `${this.width * ZOOM}`);
+      this.canvasElement.setAttribute('height', `${this.height * ZOOM}`);
 
-      document.getElementById('root').append(canvas);
+      document.getElementById('root').append(this.canvasElement);
     };
 
 
     this.drawTilemapsFromEntities(entities);
-
   }
 
   end() {
-    document.getElementById('CanvasRenderer').remove();
+    this.canvasElement.remove();
   }
 }

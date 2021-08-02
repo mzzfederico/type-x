@@ -8,6 +8,9 @@ export default class MovementSystem extends System {
   update(timeframe: number = 0, entities: Entity[]): void {
     entities
       .filter((entity: Entity): boolean => (
+        !entity.isDisabled
+      ))
+      .filter((entity: Entity): boolean => (
         !!entity.getComponent(Position)
         && !!entity.getComponent(Movement)
         && !!entity.getComponent(Collider)
@@ -19,6 +22,11 @@ export default class MovementSystem extends System {
 
         const { x, y } = movement;
 
+        if (x === 0 && y === 0) {
+          movement.onStop();
+          return;
+        }
+
         const { x: currentX, y: currentY } = position;
         collider.saveSafePosition(currentX, currentY);
         position.transformation(x * timeframe, y * timeframe);
@@ -26,12 +34,7 @@ export default class MovementSystem extends System {
         /* Frizione */
         movement.multiplySpeed(0.25, 0.25);
 
-        /* Hacky way to notify each component sthat it is being moved around or not */
-        if (movement.x + movement.y !== 0) {
-          movement.onStart({ x, y });
-        } else {
-          movement.onStop();
-        }
+        movement.onStart({ x, y });
       });
   }
 }
