@@ -122,3 +122,4 @@ client/**/*
 ./client/**/*
 
 .DS_store
+client
