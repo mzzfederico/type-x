@@ -26,7 +26,10 @@ export default class Scene {
   }
 
   addEntity = (newEntity: Entity): void => {
+    /* Adds method to get entities from scene to entities */
+    newEntity.getEntity = (findFn) => this.entities.find(findFn);
     this.entities.push(newEntity);
+
     if (!this.gameLoop.isRunning) return;
 
     [...this.gameLoop.coreSystems, ...this.systems].forEach((system: System) => {
@@ -35,8 +38,12 @@ export default class Scene {
   }
 
   removeEntity = (EntityId: string): void => {
+
     const assertEntity = (entity) => entity.id === EntityId;
     const entity = this.entities.find(assertEntity);
+
+    /* Disable method to get entities */
+    entity.getEntity = (findFn) => [].find(findFn);
 
     [...this.gameLoop.coreSystems, ...this.systems].forEach((system: System) => {
       if (entity) system.cleanup(entity);

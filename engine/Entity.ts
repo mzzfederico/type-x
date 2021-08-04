@@ -4,12 +4,10 @@ import Position from '__Components/Position.Component';
 
 export default class Entity {
   id: string;
-
   tag: string;
-
   components: Object;
-
   isDisabled: boolean;
+  getEntity: Function;
 
   constructor({
     id = uuidv4(), x = 0, y = 0, tag = '', components = {}, isDisabled = false,

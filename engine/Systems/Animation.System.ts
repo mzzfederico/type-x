@@ -6,12 +6,14 @@ import Entity from '../Entity';
 export default class AnimationSystem extends System {
   draw(time, entities) {
     entities
-      .filter((entity) => !!entity.getComponent(SpriteAnimation))
+      .filter((entity) => !!entity.getComponent(SpriteAnimation) && !!entity.getComponent(Sprite))
       .forEach(
         (entity: Entity): void => {
           const animation = entity.getComponent(SpriteAnimation) as SpriteAnimation;
           const sprite = entity.getComponent(Sprite) as Sprite;
           const currentState: SpriteAnimationState = animation.getState();
+
+          if (!currentState) return;
 
           /* Update animation clock and steps */
           animation.updateTime(time);

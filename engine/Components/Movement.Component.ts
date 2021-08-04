@@ -21,13 +21,13 @@ export default class Movement extends Component {
   }
 
   addSpeed(x, y) {
-    this.x = roundFloat(this.x + x, 100_000);
-    this.y = roundFloat(this.y + y, 100_000);
+    this.x = roundFloat(isNaN(x) ? this.x : this.x + x, 100_000);
+    this.y = roundFloat(isNaN(y) ? this.y : this.y + y, 100_000);
   }
 
-  setSpeed(x, y) {
-    this.x = x;
-    this.y = y;
+  setSpeed(x: number, y: number) {
+    this.x = isNaN(x) ? this.x : x;
+    this.y = isNaN(y) ? this.y : y;
   }
 
   multiplySpeed(x, y) {
