@@ -28,7 +28,7 @@ export default class Entity {
 
   addComponent(component: Component): Entity {
     this.components[component.constructor.name] = component;
-    component.registerEntityId(this.id);
+    component.registerEntityId(this.id, this.tag);
     return this;
   }
 

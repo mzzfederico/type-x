@@ -7,10 +7,14 @@ const ZOOM: number = parseInt(process.env.ZOOM) || 2;
 const TILE_SIZE: number = parseInt(process.env.TILE_SIZE) || 16;
 
 export default class SpriteRenderer extends System {
+  isCompatible = (entity: Entity): boolean => {
+    return !!entity.getComponent(Sprite);
+  }
+
   draw(time: number, entities: Entity[]): void {
     /* Runs the system on each frame */
     entities
-      .filter((entity: Entity) => entity.getComponent(Sprite))
+      .filter(this.isCompatible)
       .forEach((entity: Entity) => {
         const { isDisabled } = entity;
         const sprite = document.getElementById(entity.id) as HTMLImageElement;
@@ -23,12 +27,18 @@ export default class SpriteRenderer extends System {
   start = (entities: Entity[]): void => {
     /* Runs the system on start */
     entities
-      .filter((entity: Entity) => !!entity.getComponent(Sprite))
-      .forEach((entity: Entity) => {
-        const sprite = document.createElement('img');
-        this.updateSprite(sprite, entity);
-        document.getElementById('root').append(sprite);
-      });
+      .filter(this.isCompatible)
+      .forEach(this.createNewSprite)
+  }
+
+  handleNewEntity = (entity: Entity): void => {
+    if (this.isCompatible(entity)) this.createNewSprite(entity);
+  }
+
+  createNewSprite = (entity: Entity): void => {
+    const sprite = document.createElement('img');
+    this.updateSprite(sprite, entity);
+    document.getElementById('root').append(sprite);
   }
 
   updateSprite = (sprite: HTMLImageElement, entity: Entity): void => {

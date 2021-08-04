@@ -35,6 +35,7 @@ export default class CanvasRenderer extends System {
 
   redrawTilemap() {
     this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+    this.drawTilemapsFromEntities(this.$scene.entities);
   }
 
   start(entities): void {
@@ -48,7 +49,6 @@ export default class CanvasRenderer extends System {
 
       document.getElementById('root').append(this.canvasElement);
     };
-
 
     this.drawTilemapsFromEntities(entities);
   }

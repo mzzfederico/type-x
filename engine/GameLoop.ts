@@ -13,6 +13,7 @@ const ROOM_WIDTH: number = parseInt(process.env.ROOM_WIDTH) || 20;
 const ROOM_HEIGHT: number = parseInt(process.env.ROOM_HEIGHT) || 12;
 
 export default class GameLoop {
+  isRunning: boolean = false;
   lastRender: number;
 
   currentScene: Scene;
@@ -37,7 +38,6 @@ export default class GameLoop {
     if (this.currentScene) this.end();
     this.currentScene = newScene;
     this.currentScene.registerGameLoop(this);
-    this.start();
   }
 
   getSystems = (): System[] => [
@@ -50,6 +50,8 @@ export default class GameLoop {
       system.registerScene(this.currentScene);
       system.start(this.currentScene.entities);
     });
+
+    this.isRunning = true;
 
     window.requestAnimationFrame(this.loop);
   }

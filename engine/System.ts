@@ -6,7 +6,6 @@ export default class System {
   registerScene(parentScene: Scene) {
     this.$scene = parentScene;
   }
-
   draw(time, entities): void {
     /* Runs after updating the state */
   }
@@ -17,6 +16,10 @@ export default class System {
 
   start(entities): void {
     /* Runs the system on start */
+  }
+
+  handleNewEntity(entity): void {
+    /* Handles entrances of an entity */
   }
 
   cleanup(entity): void {

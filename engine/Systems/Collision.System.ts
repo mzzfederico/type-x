@@ -3,66 +3,89 @@ import Collider from '../Components/Collider.Component';
 import Position from '../Components/Position.Component';
 import Entity from '../Entity';
 import getVectorToPosition, { getUnitVector } from '../Utils/getVectorToPosition';
+import ColliderGroup from '../Components/ColliderGroup.Component';
+import { Coordinate2d } from '../Types/Coordinate2d';
 
 export default class Collision extends System {
+  colliders: Array<ColliderRecord> = [];
+
   update(time: number, entities: Entity[]): void {
-    this.checkCurrentCollisions(entities);
+    this.colliders = [];
+    entities.forEach((entity: Entity) => this.registerCollider(entity));
+    this.checkCurrentCollisions();
   }
 
-  checkCurrentCollisions(entities: Entity[]): void {
-    /* Check only colliders & enabled ones */
-    const entitiesWithCollidors = entities.filter(
-      (target: Entity) => (
-        target.getComponent(Collider) && !target.isDisabled
-      )
-    );
+  addToColliders(record: ColliderRecord): void {
+    this.colliders = [...this.colliders, record];
+  }
 
-    for (let i = 0; i < entitiesWithCollidors.length; i++) {
-      for (let k = i + 1; k < entitiesWithCollidors.length; k++) {
-        const a = entitiesWithCollidors[i];
-        const b = entitiesWithCollidors[k];
-        const colliderA = a.getComponent(Collider) as Collider;
-        const colliderB = b.getComponent(Collider) as Collider;
-        const positionA = a.getComponent(Position) as Position;
-        const positionB = b.getComponent(Position) as Position;
+  registerCollider(entity): void {
+    if (entity.isDisabled) return;
+
+    const position = entity.getComponent(Position) as Position;
+    const collider = entity.getComponent(Collider) as Collider;
+    const colliderGroup = entity.getComponent(ColliderGroup) as ColliderGroup;
+
+    if (collider) {
+      collider.currentPosition = { x: position.x, y: position.y };
+      this.addToColliders({ entity, collider, offset: { x: 0, y: 0 } });
+    }
+
+    /* Handles collider groups, which are offset to the main entity */
+    if (colliderGroup) {
+      colliderGroup.colliders.forEach(({ component, offset, isEnabled }) => {
+        if (isEnabled) this.addToColliders({ entity, collider: component, offset });
+      });
+    }
+  }
+
+  checkCurrentCollisions(): void {
+    for (let i = 0; i < this.colliders.length; i++) {
+      for (let k = i + 1; k < this.colliders.length; k++) {
+        const { entity: a, collider: colliderA } = this.colliders[i];
+        const { entity: b, collider: colliderB } = this.colliders[k];
 
         if (a != b) {
-          if (this.checkCollision(
-            a.components as CollisionCheckProps,
-            b.components as CollisionCheckProps,
-          )) {
+          if (this.checkCollision(colliderA, colliderB)) {
             let [x, y] = getVectorToPosition(
-              { x: positionA.x + (colliderA.width / 2), y: positionA.y + (colliderA.height / 2) },
-              { x: positionB.x + (colliderB.width / 2), y: positionB.y + (colliderB.height / 2) },
+              { x: colliderA.currentPosition.x + (colliderA.width / 2), y: colliderA.currentPosition.y + (colliderA.height / 2) },
+              { x: colliderB.currentPosition.x + (colliderB.width / 2), y: colliderB.currentPosition.y + (colliderB.height / 2) },
             );
 
-            colliderA.onCollision(b, this.$scene, [x, y]);
-            colliderB.onCollision(a, this.$scene, [x * -1, y * -1]);
+            if (colliderA.onCollision)
+              colliderA.onCollision(b, colliderB.tag, { x, y }, this.$scene);
+
+            if (colliderB.onCollision)
+              colliderB.onCollision(a, colliderA.tag, { x: x * - 1, y: y * -1 }, this.$scene);
           }
         }
       }
     }
 
-    entitiesWithCollidors.forEach((entity: Entity) => {
-      const collider = entity.getComponent(Collider) as Collider;
+    /* Re-enable skipped colliders && update position */
+    this.colliders.forEach(({ collider, entity, offset }) => {
+      const pos = entity.getComponent(Position) as Position;
       collider.skip = false;
+      collider.currentPosition = { x: pos.x + offset.x, y: pos.y + offset.y };
     });
   }
 
-  checkCollision(a: CollisionCheckProps, b: CollisionCheckProps): boolean {
-    if (a.Collider.skip) return false;
-    if (b.Collider.skip) return false;
-    if (a.Position.x < (b.Position.x + b.Collider.width)
-      && (a.Position.x + a.Collider.width) > b.Position.x
-      && a.Position.y < (b.Position.y + b.Collider.height)
-      && (a.Position.y + a.Collider.height) > b.Position.y) {
+  checkCollision(a: Collider, b: Collider): boolean {
+    if (a.skip) return false;
+    if (b.skip) return false;
+
+    if (a.currentPosition.x < (b.currentPosition.x + b.width)
+      && (a.currentPosition.x + a.width) > b.currentPosition.x
+      && a.currentPosition.y < (b.currentPosition.y + b.height)
+      && (a.currentPosition.y + a.height) > b.currentPosition.y) {
       return true;
     }
     return false;
   }
+
+  end() {
+    this.colliders = [];
+  }
 }
 
-type CollisionCheckProps = {
-  Position: Position;
-  Collider: Collider;
-}
+type ColliderRecord = { entity: Entity, collider: Collider, offset: Coordinate2d };

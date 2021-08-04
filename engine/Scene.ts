@@ -27,9 +27,10 @@ export default class Scene {
 
   addEntity = (newEntity: Entity): void => {
     this.entities.push(newEntity);
+    if (!this.gameLoop.isRunning) return;
 
     [...this.gameLoop.coreSystems, ...this.systems].forEach((system: System) => {
-      system.start([newEntity]);
+      system.handleNewEntity(newEntity);
     });
   }
 
