@@ -3,30 +3,39 @@ import Input from '../Components/Input.Component';
 import Entity from '../Entity';
 
 export default class InputManager extends System {
-  inputs: Object = {};
+  configs: Object = {};
 
-  update(time: number, entities: Entity[]): void {
-    /* Gathers all keys to be watched */
-    Object.entries(this.inputs).forEach((inputEntry: [string, InputEntry]) => {
-      const entry = inputEntry[1];
-      if (entry.pressed) entry.event(time);
-    });
+  registerConfig(entityId: string, config): void {
+    const formatKeyBind = (config) => Object.entries(config).map(
+      (configEntry): InputEntry => ({ key: configEntry[0], event: configEntry[1], pressed: false })
+    );
+    this.configs = { ...this.configs, [entityId]: formatKeyBind(config) };
   }
 
-  deleteKey(key: string): void {
-    delete this.inputs[key];
-  }
-
-  registerKey(key: string, event): void {
-    this.inputs = { ...this.inputs, [key]: { pressed: false, event } };
+  removeConfig(entitiId: string): void {
+    delete this.configs[entitiId];
   }
 
   handleKeyEvent = (event): void => {
     const { key, type } = event;
-    if (key in this.inputs) {
-      if (type === 'keydown') this.inputs[key].pressed = true;
-      if (type === 'keyup') this.inputs[key].pressed = false;
-    }
+
+    Object.entries(this.configs).forEach(([entityId, bindArray]: [string, Array<InputEntry>]) => {
+      bindArray.forEach((entry: InputEntry) => {
+        if (entry.key !== key) return;
+
+        if (type === 'keydown') entry.pressed = true;
+        if (type === 'keyup') entry.pressed = false;
+      });
+    });
+  }
+
+  update(time: number, entities: Entity[]): void {
+    /* Gathers all keys to be watched */
+    Object.entries(this.configs).forEach(([entityId, bindArray]: [string, Array<InputEntry>]) => {
+      bindArray.forEach((entry: InputEntry) => {
+        if (entry.pressed) entry.event(time);
+      });
+    });
   }
 
   end(): void {
@@ -34,14 +43,17 @@ export default class InputManager extends System {
     document.removeEventListener('keyup', this.handleKeyEvent);
   }
 
+  cleanup(entity) {
+    this.removeConfig(entity.id);
+  }
+
   start = (entities: Entity[]): void => {
     /* Gathers all keys to be watched */
     entities
       .filter((entity: Entity) => entity.getComponent(Input))
       .forEach((entity: Entity) => {
-        Object.entries((entity.getComponent(Input) as Input).config).forEach(
-          ([key, event]) => this.registerKey(key, event),
-        );
+        const entityConfig = (entity.getComponent(Input) as Input).config;
+        this.registerConfig(entity.id, entityConfig);
       });
 
     document.addEventListener('keydown', this.handleKeyEvent);
@@ -50,6 +62,7 @@ export default class InputManager extends System {
 }
 
 export type InputEntry = {
-  event: Function;
+  key: string;
+  event: any;
   pressed: boolean;
 }
