@@ -3,6 +3,7 @@ export default class Component {
 
   entityId: string;
   tag: string;
+  isEnabled: boolean = true;
 
   registerEntityId(id: string, tag: string): void {
     this.entityId = id;

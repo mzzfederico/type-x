@@ -45,7 +45,7 @@ export default class SpriteRenderer extends System {
     if (entity.id) sprite.setAttribute('id', entity.id);
 
     const { x, y } = entity.getComponent(Position) as Position;
-    const { src, width, height } = entity.getComponent(Sprite) as Sprite;
+    const { src, width, height, isEnabled } = entity.getComponent(Sprite) as Sprite;
 
     sprite.classList.add(entity.tag);
 
@@ -59,6 +59,9 @@ export default class SpriteRenderer extends System {
     sprite.style.display = 'block';
 
     sprite.src = src;
+
+    if (!isEnabled) sprite.style.display = "none";
+    if (isEnabled) sprite.style.display = "block";
   }
 
   hideSprite(sprite: HTMLImageElement): void {
