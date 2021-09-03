@@ -20,18 +20,34 @@ export default class Entity {
     this.addComponent(new Position({ x, y }));
   }
 
-  getComponent(componentClass): unknown {
-    return this.components[componentClass.name];
+  getComponent(componentClass): Component | Object {
+    if (componentClass.name in this.components) {
+      return this.components[componentClass.name][0];
+    }
+    return false;
+  }
+
+  getComponents(componentClass): Array<Component> {
+    const results = this.components[componentClass.name];
+    if (Array.isArray(results)) {
+      return results;
+    }
+    return [];
   }
 
   addComponent(component: Component): Entity {
-    this.components[component.constructor.name] = component;
-    component.registerEntityId(this.id, this.tag);
+    const className = component.constructor.name;
+    if (!Array.isArray(this.components[className])) {
+      this.components[className] = new Array(0);
+    }
+    this.components[className] = [...this.components[className], component];
     return this;
   }
 
   removeComponent(component: Component): Entity {
-    delete this.components[component.name];
+    this.components[component.name] = this.components[component.name].filter(
+      existingComponent => component.id !== existingComponent.id
+    );
     return this;
   }
 

@@ -41,22 +41,28 @@ export default class Collision extends System {
 
   checkCurrentCollisions(): void {
     for (let i = 0; i < this.colliders.length; i++) {
+      const { entity: a, collider: colliderA } = this.colliders[i];
       for (let k = i + 1; k < this.colliders.length; k++) {
-        const { entity: a, collider: colliderA } = this.colliders[i];
         const { entity: b, collider: colliderB } = this.colliders[k];
 
         if (a != b) {
           if (this.checkCollision(colliderA, colliderB)) {
             let [x, y] = getVectorToPosition(
-              { x: colliderA.currentPosition.x + (colliderA.width / 2), y: colliderA.currentPosition.y + (colliderA.height / 2) },
-              { x: colliderB.currentPosition.x + (colliderB.width / 2), y: colliderB.currentPosition.y + (colliderB.height / 2) },
+              {
+                x: colliderA.currentPosition.x + (colliderA.width / 2),
+                y: colliderA.currentPosition.y + (colliderA.height / 2)
+              },
+              {
+                x: colliderB.currentPosition.x + (colliderB.width / 2),
+                y: colliderB.currentPosition.y + (colliderB.height / 2)
+              },
             );
 
             if (colliderA.onCollision)
-              colliderA.onCollision(b, colliderB.tag, { x, y }, this.$scene);
+              colliderA.onCollision(b, { x, y }, this.$scene);
 
             if (colliderB.onCollision)
-              colliderB.onCollision(a, colliderA.tag, { x: x * - 1, y: y * -1 }, this.$scene);
+              colliderB.onCollision(a, { x: x * - 1, y: y * -1 }, this.$scene);
           }
         }
       }

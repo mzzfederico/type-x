@@ -1,7 +1,9 @@
 {
     "dependencies": {
+        "@pixi/tilemap": "^3.2.1",
         "esbuild": "^0.12.15",
         "express": "^4.17.1",
+        "pixi.js": "^6.1.1",
         "uuid": "^8.3.2"
     },
     "license": "MIT",

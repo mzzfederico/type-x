@@ -10,7 +10,7 @@ export default class Collider extends Component {
   height: number;
   isRigid: boolean;
   tag: string;
-  onCollision?: (target: Entity, tag: string, direction: Coordinate2d, scene: Scene,) => void;
+  onCollision?: (target: Entity, direction: Coordinate2d, scene: Scene) => void;
   hasWeight?: number;
   currentPosition: Coordinate2d;
   safePosition: Coordinate2d;
@@ -21,8 +21,7 @@ export default class Collider extends Component {
     width, height,
     onCollision,
     isRigid = false,
-    isEnabled = true,
-    tag = ""
+    isEnabled = true
   }) {
     super();
 
@@ -33,7 +32,6 @@ export default class Collider extends Component {
     this.height = height;
     this.isRigid = isRigid;
     this.skip = false;
-    this.tag = tag;
     this.onCollision = onCollision;
   }
 

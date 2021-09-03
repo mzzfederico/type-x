@@ -3,18 +3,11 @@ import System from '__Core/System';
 import GameLoop from './GameLoop';
 
 export default class Scene {
-  target: HTMLElement;
-
   entities: Entity[];
-
   systems: System[];
-
-  lastRender: number;
-
   gameLoop: GameLoop;
 
-  constructor(targetId: string, entities: Entity[] = [], systems: System[] = []) {
-    this.target = document.getElementById(targetId);
+  constructor(entities: Entity[] = [], systems: System[] = []) {
     this.entities = entities;
     this.systems = systems;
     this.gameLoop;
@@ -41,6 +34,7 @@ export default class Scene {
 
     const assertEntity = (entity) => entity.id === EntityId;
     const entity = this.entities.find(assertEntity);
+    if (!entity) return;
 
     /* Disable method to get entities */
     entity.getEntity = (findFn) => [].find(findFn);
@@ -50,10 +44,5 @@ export default class Scene {
     });
 
     this.entities = this.entities.filter((e) => !assertEntity(e));
-  }
-
-  addSystem = (newSystem: System): void => {
-    newSystem.registerScene(this);
-    this.systems.push(newSystem);
   }
 }

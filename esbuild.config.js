@@ -13,6 +13,7 @@ module.exports = {
         'process.env.ROOM_HEIGHT': 12,
     },
     loader: {
-        ".png": "dataurl"
+        ".png": "dataurl",
+        ".json": "json"
     }
 };

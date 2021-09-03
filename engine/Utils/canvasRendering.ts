@@ -1,8 +1,11 @@
+import * as Pixi from "pixi";
 const ZOOM: number = parseInt(process.env.ZOOM) || 2;
 const TILE_SIZE: number = parseInt(process.env.TILE_SIZE) || 16;
 const realTileSize: number = TILE_SIZE * ZOOM;
 
 export function drawTileMap(ctx, map, tileset, offset) {
+  if (!tileset) return;
+
   const image = new Image();
   image.src = tileset.src;
 
@@ -15,6 +18,8 @@ export function drawTileMap(ctx, map, tileset, offset) {
       for (let r = 0; r < map.length; r++) {
         const tile = getTile(c, r);
         if (tile >= 0) {
+          let rectangle = new Pixi.Rectangle(192, 128, 64, 64);
+
           ctx.drawImage(
             image, // image
             (tile % tileset.w) * TILE_SIZE, // source x

@@ -2,15 +2,16 @@ import System from '../System';
 import Sprite from '../Components/Sprite.Component';
 import SpriteAnimation, { SpriteAnimationState } from '../Components/SpriteAnimation.Component';
 import Entity from '../Entity';
+import PixiSprite from '../Components/PixiSprite.Component';
 
 export default class AnimationSystem extends System {
   draw(time, entities) {
     entities
-      .filter((entity) => !!entity.getComponent(SpriteAnimation) && !!entity.getComponent(Sprite))
+      .filter((entity) => !!entity.getComponent(SpriteAnimation) && !!entity.getComponent(PixiSprite))
       .forEach(
         (entity: Entity): void => {
           const animation = entity.getComponent(SpriteAnimation) as SpriteAnimation;
-          const sprite = entity.getComponent(Sprite) as Sprite;
+          const sprite = entity.getComponent(PixiSprite) as PixiSprite;
           const currentState: SpriteAnimationState = animation.getState();
 
           if (!currentState) return;
@@ -23,11 +24,11 @@ export default class AnimationSystem extends System {
           }
 
           /* Update sprite source on frame change */
-          const currentSrc = sprite.src;
+          const currentName = sprite.name;
           const currentFrame = animation.getCurrentFrame();
 
-          if (currentSrc !== currentFrame) {
-            sprite.replaceSource(currentFrame);
+          if (currentName !== currentFrame) {
+            sprite.name = currentFrame;
           }
         },
       );

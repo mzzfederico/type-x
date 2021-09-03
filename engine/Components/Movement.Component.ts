@@ -1,14 +1,13 @@
 import Component from '../Component';
+import { Coordinate2d } from '../Types/Coordinate2d';
 import { roundFloat } from '../Utils/rounding';
 
 export default class Movement extends Component {
   x: number;
-
   y: number;
-
   onStart: Function;
-
   onStop: Function;
+  scrolling: { position: Coordinate2d; duration: number; } = { position: { x: null, y: null }, duration: null }
 
   constructor({
     x, y, onStart = () => { }, onStop = () => { },
